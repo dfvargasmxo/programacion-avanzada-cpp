@@ -24,31 +24,32 @@ struct Rectangulo {
     double altura;
 
     double area() {
-        // TODO: retorna base * altura
-        return 0.0;
+        return base * altura;
     }
 
     double perimetro() {
-        // TODO: retorna 2 * (base + altura)
-        return 0.0;
+        return 2 * (base + altura);
     }
 
-    void escalar(double factor) {
-        // TODO: reasigna base y altura multiplicandolos por factor
-        // (usa base = ... y altura = ..., como en cualquier funcion que ya conoces)
+    double escalar(double factor) {
+        base *= factor;
+        altura *= factor;
     }
 };
 
 int main() {
-    Rectangulo r;
-    r.base = 10.0;
-    r.altura = 5.0;
+    Rectangulo rectangulo{10.0, 5.0};
 
-    std::cout << "Area: " << r.area() << std::endl;
-    std::cout << "Perimetro: " << r.perimetro() << std::endl;
+    std::cout << "Area: " << rectangulo.area() << std::endl;
+    std::cout << "Perimetro: " << rectangulo.perimetro() << std::endl;
 
-    r.escalar(2.0);
-    std::cout << "Despues de escalar x2 -> base: " << r.base << ", altura: " << r.altura << std::endl;
+    rectangulo.escalar(2.0);
+
+    std::cout << "Despues de escalar x2 -> base: "
+              << rectangulo.base
+              << ", altura: "
+              << rectangulo.altura
+              << std::endl;
 
     return 0;
 }
