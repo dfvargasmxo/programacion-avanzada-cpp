@@ -28,6 +28,13 @@ private:
 
 public:
     bool setHorario(double apertura, double cierre) {
+        if ((apertura >= 0) && (cierre <= 24) && (apertura < cierre)) {
+            horaApertura = apertura;
+            horaCierre = cierre;
+            return true;
+        } else {
+            return false;
+        }
         // TODO: valida apertura >= 0, cierre <= 24, apertura < cierre.
         // Si algo falla, retorna false sin modificar los atributos. Si
         // todo es valido, asigna los dos atributos juntos y retorna true.

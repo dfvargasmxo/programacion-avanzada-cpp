@@ -8,15 +8,10 @@
 // main(); no necesitas tocar main(), solo completar la clase.
 //
 // Completa ReservaSala:
-// - Constructor ReservaSala(int capacidadInicial): si capacidadInicial
-//   es invalida (<= 0 o > 50), imprime "Reserva creada, capacidad
-//   segura por defecto (5)" y asigna capacidadPersonas = 5. Si es
-//   valida, imprime "Reserva creada, capacidad " + capacidadInicial y
-//   la asigna.
-// - setHorario(double inicio, double fin): mismo invariante conjunto
-//   del Ejercicio 6 (inicio >= 0, fin <= 24, inicio < fin).
+
+
 // - getCapacidadPersonas().
-// - Destructor ~ReservaSala(): imprime "Reserva liberada".
+
 //
 // Salida esperada:
 // Reserva creada, capacidad 20
@@ -43,12 +38,30 @@ private:
 
 public:
     ReservaSala(int capacidadInicial) {
-        // TODO
+        if ((capacidadInicial <= 0) || (capacidadInicial > 50)) {
+            std::cout << "Reserva creada, capacidad segura por defecto (5)" << std::endl;
+            capacidadPersonas = 5;
+        } else {
+            std::cout << "Reserva creada, capacidad " << capacidadInicial << std::endl;
+            capacidadPersonas = capacidadInicial;
+        }
+        // - Constructor ReservaSala(int capacidadInicial): si capacidadInicial
+        //   es invalida (<= 0 o > 50), imprime "Reserva creada, capacidad
+        //   segura por defecto (5)" y asigna capacidadPersonas = 5. Si es
+        //   valida, imprime "Reserva creada, capacidad " + capacidadInicial y
+        //   la asigna.
     }
 
     bool setHorario(double inicio, double fin) {
-        // TODO
-        return false;
+        if ((inicio >= 0) && (fin <= 24) && (inicio < fin)) {
+            horaInicio = inicio;
+            horaFin = fin;
+            return true;
+        } else {
+            return false;
+        }
+        // - setHorario(double inicio, double fin): mismo invariante conjunto
+        //   del Ejercicio 6 (inicio >= 0, fin <= 24, inicio < fin).
     }
 
     int getCapacidadPersonas() {
@@ -56,6 +69,8 @@ public:
     }
 
     ~ReservaSala() {
+        std::cout << "Reserva liberada." << std::endl;
+        // - Destructor ~ReservaSala(): imprime "Reserva liberada".
         // TODO
     }
 };
