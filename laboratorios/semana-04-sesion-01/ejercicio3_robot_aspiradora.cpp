@@ -27,14 +27,21 @@ class DispositivoElectronico {
         void describir() {
             std::cout << "Dispositivo #" << numeroSerie << ", encendido: " << (encendido ? "si" : "no") << std::endl;
         }
+        
+        void aspirar() {
+        std::cout << "Aspirando el polvo del piso" << std::endl;
+    }
+
+    void moverse(int distanciaCm) {
+        std::cout << "Moviendose " << distanciaCm << " cm hacia adelante" << std:: endl;
+    }
 };
 
 // TODO: RobotAspiradora hereda de una sola clase base (herencia simple,
 // sin herencia multiple). Agrega:
 // - void aspirar(): imprime "Aspirando el polvo del piso"
 // - void moverse(int distanciaCm): imprime "Moviendose <distanciaCm> cm hacia adelante"
-class RobotAspiradora {
-    // TODO
+class RobotAspiradora: public DispositivoElectronico {
 };
 
 int main() {
