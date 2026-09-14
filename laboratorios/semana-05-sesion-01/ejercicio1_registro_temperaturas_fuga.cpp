@@ -21,6 +21,8 @@ class RegistroTemperaturas {
 
         // TODO: falta el destructor. Sin el, la memoria de "lecturas"
         // nunca se libera cuando el objeto deja de existir.
+        
+    
 };
 
 void registrarDia(int capacidad) {
