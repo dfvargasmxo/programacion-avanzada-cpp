@@ -19,11 +19,14 @@ private:
 public:
     bool setEdadAnios(int e) {
         // TODO: valida que e este entre 0 y 100 (ambos incluidos).
-        return false;
+        if (e >= 0 && e <= 100) {
+            edadAnios = e;
+            return true;
+        } else {return false;}
     }
     int getEdadAnios() {
         // TODO: devuelve edadAnios.
-        return 0;
+        return edadAnios;
     }
 };
 
@@ -33,11 +36,14 @@ private:
 public:
     bool setNumeroPatas(int p) {
         // TODO: valida que p este entre 0 y 8 (ambos incluidos).
-        return false;
+        if (p >= 0 && p <= 8) {
+            numeroPatas = p;
+            return true;
+        } else {return false;} 
     }
     int getNumeroPatas() {
         // TODO: devuelve numeroPatas.
-        return 0;
+        return numeroPatas;
     }
 };
 
@@ -47,13 +53,15 @@ private:
 public:
     void setEsRescatado(bool r) {
         // TODO: asigna esRescatado. No hay invariante que validar.
+        esRescatado = r;
     }
     bool getEsRescatado() {
         // TODO: devuelve esRescatado.
-        return false;
+        return esRescatado;
     }
     void ladrar() {
         // TODO: imprime "Guau guau" seguido de un salto de linea.
+        std::cout << "Guau guau" << std::endl;
     }
 };
 

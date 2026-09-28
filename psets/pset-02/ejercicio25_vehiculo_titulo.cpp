@@ -77,3 +77,66 @@
 // Motor del vehiculo 2 antes: Vehiculo sin motor
 // Motor del vehiculo 1 despues: Vehiculo sin motor
 // Motor del vehiculo 2 despues: Motor de 180 HP
+
+#include <iostream>
+#include <memory>
+
+class Motor {
+private:
+    int potenciaHP;
+public:
+    Motor(int hp) : potenciaHP(hp) {}
+    int getPotenciaHP() const {
+        return potenciaHP;
+    }
+};
+
+std::ostream& operator<<(std::ostream& os, const Motor& m) {
+    os << "Motor de " << m.getPotenciaHP() << " HP";
+    return os;
+}
+
+class TituloPropiedad {
+private:
+    int numeroRegistro;
+public:
+    TituloPropiedad(int n) : numeroRegistro(n) {}
+    int getNumeroRegistro() const {return numeroRegistro;}
+};
+
+class Vehiculo {
+private:
+    std::unique_ptr<Motor> motorPropio;
+    std::shared_ptr<TituloPropiedad> tituloPropio;
+public:
+    Vehiculo() : motorPropio(nullptr), tituloPropio(nullptr) {}
+    Vehiculo(std::unique_ptr<Motor> m) : motorPropio(std::move(m)), tituloPropio(nullptr) {}
+    void registrarTitulo(std::shared_ptr<TituloPropiedad> t) {tituloPropio = t;}
+    bool tieneMotor() const {return !!motorPropio;}
+    void mostrarMotor() const {
+        if (tieneMotor()) {
+            std::cout << *motorPropio << std::endl;} else {
+            std::cout << "Vehiculo sin motor" << std::endl;}
+    }
+    std::unique_ptr<Motor> extraerMotor() {return std::move(motorPropio);}
+    void recibirMotor(std::unique_ptr<Motor> nuevoMotor) {motorPropio = std::move(nuevoMotor);}
+};
+
+class Concesionario {
+private:
+    std::shared_ptr<TituloPropiedad> tituloEnRegistro;
+public:
+    void archivarTitulo(std::shared_ptr<TituloPropiedad> t) {tituloEnRegistro = t;}
+    int referenciasTitulo() const {return tituloEnRegistro.use_count();}
+};
+
+int main() {
+    auto titulo = std::make_shared<TituloPropiedad>(4521);
+    auto motor1 = std::make_unique<Motor>(180);
+    Vehiculo vehiculo1(std::move(motor1));
+    vehiculo1.registrarTitulo(titulo);
+    Concesionario concesionario1;
+    concesionario1.archivarTitulo(titulo);
+    std::cout << "Referencias al titulo: " << concesionario1.referenciasTitulo() << std::endl;
+    std::cout << "Motor del vehiculo 1: ";
+    vehiculo1.mostrarMotor();

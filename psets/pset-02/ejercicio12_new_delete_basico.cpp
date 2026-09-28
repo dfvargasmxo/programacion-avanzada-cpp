@@ -17,14 +17,22 @@ int main() {
 
     // TODO: asigna a valores los numeros 10, 20, 30, 40 y 50 (en ese orden,
     // por indice).
+    int* valores = new int[5];
+    valores[0] = 10;
+    valores[1] = 20;
+    valores[2] = 30;
+    valores[3] = 40;
+    valores[4] = 50;
 
     int suma = 0;
     for (int i = 0; i < 5; i++) {
         // TODO: suma valores[i] a suma.
+        suma += valores[i];
     }
     std::cout << "Suma: " << suma << std::endl;
 
     // TODO: libera la memoria reservada con delete[].
+    delete[] valores;
 
     return 0;
 }

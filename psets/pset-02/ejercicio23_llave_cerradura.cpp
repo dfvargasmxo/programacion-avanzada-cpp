@@ -39,3 +39,44 @@
 // Asignar llave1: true
 // Asignar llave2: false
 // Tiene llave despues: true
+
+#include <iostream>
+#include <memory>
+
+class Llave {
+private:
+    int numeroSerie;
+public:
+    Llave() : numeroSerie(0) {}
+    void setNumeroSerie(int n) {
+        numeroSerie = n;
+    }
+    int getNumeroSerie() const {return numeroSerie; }
+};
+
+class Cerradura {
+private:
+    std::unique_ptr<Llave> llaveAsignada;
+public:
+    bool asignarLlave(std::unique_ptr<Llave> nuevaLlave) {
+        if (llaveAsignada) {
+            return false;
+        }
+        llaveAsignada = std::move(nuevaLlave);
+        return true;
+    }
+    bool tieneLlave() const {return !!llaveAsignada;}
+};
+
+int main() {
+    auto llave1 = std::make_unique<Llave>();
+    llave1->setNumeroSerie(101);
+    auto llave2 = std::make_unique<Llave>();
+    llave2->setNumeroSerie(202);
+    Cerradura cerradura;
+    std::cout << "Tiene llave antes: " << std::boolalpha << cerradura.tieneLlave() << std::endl;
+    std::cout << "Asignar llave 1: " << std::boolalpha << cerradura.asignarLlave(std::move(llave1)) << std::endl;
+    std::cout << "Asignar llave 2: " << std::boolalpha << cerradura.asignarLlave(std::move(llave2)) << std::endl;
+    std::cout << "Tiene llave despues: " << std::boolalpha << cerradura.tieneLlave() << std::endl;
+    return 0;
+}
