@@ -22,3 +22,37 @@
 //
 //     g++ -std=c++20 -Wall -Wextra -g -I ejercicio3/version_a ejercicio3/test_tarifa.cpp -lgtest_main -lgtest -pthread -o bin/test_tarifa_a
 //     ./bin/test_tarifa_a
+
+TEST(Tarifa, MinutosNegativosLanza) {
+
+    EXPECT_THROW(tarifaEnCentavos(-1), std::invalid_argument);
+    
+}
+
+TEST(Tarifa, 15MinutosNoCobra) {
+
+    EXPECT_EQ(tarifaEnCentavos(0), 0);
+    EXPECT_EQ(tarifaEnCentavos(15),0);
+    EXPECT_EQ(tarifaEnCentavos(16), 50);
+
+}
+
+TEST(Tarifa, Desde16MinCobra) {
+    
+    EXPECT_EQ(tarifaEnCentavos(16), 50);
+    EXPECT_EQ(tarifaEnCentavos(60), 50);
+    EXPECT_EQ(tarifaEnCentavos(61), 100);
+
+}
+ 
+TEST(Tarifa, Maximo500Centavos) {
+
+    EXPECT_EQ(tarifaEnCentavos(1000), 500);
+    EXPECT_EQ(tarifaEnCentavos(2000), 500);
+
+}
+ 
+
+
+
+
