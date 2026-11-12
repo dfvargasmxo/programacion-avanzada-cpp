@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <optional>
+#include <cstddef>
 
 // Reporte de cuanto tiempo estuvo cada placa en el estacionamiento, a
 // partir del registro de entradas y salidas del dia (en minutos desde las
@@ -44,14 +46,14 @@ class RegistroDelDia {
             estadias.push_back(estadia);
         }
 
-        int cantidad() {
+        std::size_t cantidad() {
             return estadias.size();
         }
 
         // Devuelve la ultima estadia de la placa, o nullptr si no hay.
         Estadia* ultimaDe(int placa) {
             Estadia* encontrada = nullptr;
-            for (int i = 0; i < cantidad(); i++) {
+            for (std::size_t i = 0; i < cantidad(); i++) {
                 if (estadias[i].getPlaca() == placa) {
                     encontrada = &estadias[i];
                 }
@@ -60,8 +62,13 @@ class RegistroDelDia {
         }
 };
 
-int minutosDe(RegistroDelDia* registro, int placa) {
+std::optional<int> minutosDe(RegistroDelDia* registro, int placa) {
     Estadia* estadia = registro->ultimaDe(placa);
+
+    if (estadia == nullptr) {
+        return std::nullopt;
+    }
+
     return estadia->getSalida() - estadia->getEntrada();
 }
 
@@ -73,9 +80,15 @@ int main() {
 
     int placas[4] = {4521, 7788, 5555, 3011};
     for (int i = 0; i < 4; i++) {
-        int minutos = minutosDe(&registro, placas[i]);
-        std::cout << "Placa " << placas[i] << ": " << minutos << " minutos" << std::endl;
-    }
+    std::optional<int> minutos = minutosDe(&registro, placas[i]);
 
+    if (minutos.has_value()) {
+        std::cout << "Placa " << placas[i] << ": "
+                  << minutos.value() << " minutos" << std::endl;
+    } else {
+        std::cout << "Placa " << placas[i]
+                  << ": sin registro hoy" << std::endl;
+    }
+}
     return 0;
 }

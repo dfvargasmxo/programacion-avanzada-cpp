@@ -54,8 +54,8 @@ class Estacionamiento {
             if (!puesto.has_value()) {
                 return std::nullopt;
             }
-            ocupado[*puesto] = false;
+            ocupado[puesto.value()] = false;
             puestoDePlaca.erase(placa);
-            return puesto;
+            return puesto.value();
         }
 };
