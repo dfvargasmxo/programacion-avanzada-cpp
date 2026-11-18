@@ -35,6 +35,7 @@ class TarjetaAtomica {
         }
 
         // Cada linea es atomica por separado. El metodo completo, no.
+
         void cobrarIngenuo(int monto) {
             if (saldo >= monto) {
                 saldo -= monto;
@@ -52,7 +53,17 @@ class TarjetaAtomica {
             // cambia el saldo solo si sigue valiendo actual. Si lo logra,
             // cuenta un cobro aceptado y sale. Si no, compare_exchange_weak
             // ya dejo en actual el saldo nuevo: el ciclo vuelve a decidir.
-        }
+            int actual = saldo;
+            while (true) {
+                if (actual < monto) {
+                    rechazados++;
+                    return; } else {
+                        if (saldo.compare_exchange_weak(actual, actual - monto)) {
+                            aceptados++;
+                            return;
+                        }
+                    }
+                }}
 
         int getSaldo() {
             return saldo;
