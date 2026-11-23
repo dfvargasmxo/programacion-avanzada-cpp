@@ -40,3 +40,131 @@
 // A las 12: 0
 // Nadie a las 13
 // Paciente 505: 8
+
+#include <iostream>
+#include <map>
+#include <optional>
+#include <stdexcept>
+
+class AgendaDelConsultorio {
+    private:
+    std::map<int, int> pacientePorHora;
+    
+    public:
+    std::optional<int> pacienteEn(int hora) {
+        auto it = pacientePorHora.find(hora);
+        if (it == pacientePorHora.end()) {
+            return std::nullopt;
+        }
+        return it->second;
+    }
+
+    std::optional<int> primeraLibreDesde(int hora) {
+        if (hora < 8) {
+            hora = 8;
+        }
+        for (int h = hora; h <= 17; h++) {
+            if (pacientePorHora.find(h) == pacientePorHora.end()) {
+                return h;
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::optional<int> agendar(int paciente, int desde) {
+        std::optional<int> hora = primeraLibreDesde(desde);
+        if (!hora.has_value()) {
+            return std::nullopt;
+        }
+        pacientePorHora[*hora] = paciente;
+        return hora;
+    }
+
+    bool cancelar(int hora) {
+        auto it = pacientePorHora.find(hora);
+        if (it == pacientePorHora.end()) {
+            return false;
+        }
+        pacientePorHora.erase(it);
+        return true;
+    }
+};
+
+int main() {
+    AgendaDelConsultorio agenda;
+
+    auto hora501 = agenda.agendar(501, 8);
+    auto hora502 = agenda.agendar(502, 8);
+    auto hora503 = agenda.agendar(503, 16);
+    auto hora504 = agenda.agendar(504, 16);
+    auto hora504OtraVez = agenda.agendar(504, 16);
+
+    std::cout << "Paciente 501: ";
+
+    if (hora501.has_value()) {
+        std::cout << hora501.value() << std::endl;
+    } else {
+        std::cout << "sin hora" << std::endl;
+    }
+
+    std::cout << "Paciente 502: ";
+
+    if (hora502.has_value()) {
+        std::cout << hora502.value() << std::endl;
+    } else {
+        std::cout << "sin hora" << std::endl;
+    }
+    
+    std::cout << "Paciente 503: ";
+
+    if (hora503.has_value()) {
+        std::cout << hora503.value() << std::endl;
+    } else {
+        std::cout << "sin hora" << std::endl;
+    }
+
+    std::cout << "Paciente 504: ";
+
+    if (hora504.has_value()) {
+        std::cout << hora504.value() << std::endl;
+    } else {
+        std::cout << "sin hora" << std::endl;
+    }
+
+    std::cout << "Paciente 504 otra vez: ";
+
+    if (hora504OtraVez.has_value()) {
+        std::cout << hora504OtraVez.value() << std::endl;
+    } else {
+        std::cout << "sin hora" << std::endl;
+    }
+
+    std::cout << "A las 9: ";
+
+    if (agenda.pacienteEn(9).has_value()) {
+        std::cout << *agenda.pacienteEn(9) << std::endl;
+    } else {
+        std::cout << "sin paciente" << std::endl;
+    }
+
+    std::cout << "A las 12: " << agenda.pacienteEn(12).value_or(0) << std::endl;
+
+    try {
+        std::cout << agenda.pacienteEn(13).value() << std::endl;
+    }
+    catch (const std::bad_optional_access& e) {
+        std::cout << "Nadie a las 13" << std::endl;
+    }
+
+    agenda.cancelar(8);
+    auto hora505 = agenda.agendar(505, 7);
+
+    std::cout << "Paciente 505: ";
+    if (hora505.has_value()) {
+        std::cout << hora505.value() << std::endl;
+    } else {
+        std::cout << "sin hora" << std::endl;
+    }
+    return 0;
+}
+

@@ -31,18 +31,43 @@ public:
     }
     std::optional<int> anioDe(int codigo) {
         // TODO: si el codigo no esta, devuelve std::nullopt; si esta, su anio.
-        return std::nullopt;
+        auto it = anioPorCodigo.find(codigo);
+        
+        if (it == anioPorCodigo.end()) {
+            return std::nullopt;
+        }
+        return it->second;
     }
+
     std::optional<int> masAntiguo() {
         // TODO: devuelve el anio mas antiguo de todos los libros, o std::nullopt
         // si no hay libros.
-        return std::nullopt;
+        if (anioPorCodigo.empty()) {
+            return std::nullopt;}
+            
+            int antiguo = anioPorCodigo.begin()->second;
+            
+            for (const auto& libro : anioPorCodigo) {
+                if (libro.second < antiguo) {
+                    antiguo = libro.second;
+                }
+            }
+            return antiguo;
     }
+
     std::optional<int> prestar(int codigo, int hoy) {
         // TODO: si el libro no existe o ya esta prestado, devuelve std::nullopt.
         // Si no, lo marca como prestado y devuelve el dia de devolucion,
         // hoy + 7.
-        return std::nullopt;
+        if (anioPorCodigo.find(codigo) == anioPorCodigo.end()) {
+            return std::nullopt;}
+            
+            if (prestados.find(codigo) != prestados.end()) {
+                return std::nullopt;
+            }
+            
+            prestados.insert(codigo);
+            return hoy + 7;
     }
 };
 

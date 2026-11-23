@@ -28,3 +28,86 @@
 // Promedio: 9812.38
 // Dias con meta: 5
 // Mejor racha: 2
+
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+class HistorialDePasos {
+    private:
+    std::vector<int> pasos;
+    
+    public:
+    bool registrar(int cantidad) {
+        if (cantidad < 0) {
+            return false;
+        }
+        pasos.push_back(cantidad);
+        return true;
+    }
+    int dias() {
+        return static_cast<int>(pasos.size());
+    }
+    double promedio() {
+        if (pasos.empty()) {
+            return 0.0;
+        }
+        int suma = 0;
+        for (int cantidad : pasos) {
+            suma += cantidad;
+        }
+        return static_cast<double>(suma) / pasos.size();
+    }
+
+    int diasSobreMeta(int meta) {
+        int contador = 0;
+        for (int cantidad : pasos) {
+            if (cantidad >= meta) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+    int mejorRacha(int meta) {
+        int rachaActual = 0;
+        int mejor = 0;
+
+        for (int cantidad : pasos) {
+            if (cantidad >= meta) {
+                rachaActual++;
+                
+                if (rachaActual > mejor) {
+                    mejor = rachaActual;
+                }}
+                else {
+                rachaActual = 0;}
+        }
+        return mejor;
+    }
+};
+
+int main() {
+    HistorialDePasos historial;
+
+    historial.registrar(8000);
+    historial.registrar(12000);
+    historial.registrar(10500);
+
+    std::cout << "Registrar -50: " << historial.registrar(-50) << '\n';
+
+    historial.registrar(4000);
+    historial.registrar(11000);
+    historial.registrar(13000);
+    historial.registrar(9999);
+    historial.registrar(10000);
+    int meta = 10000;
+
+    std::cout << "Dias registrados: " << historial.dias() << '\n';
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Promedio: " << historial.promedio() << '\n';
+    std::cout << "Dias con meta: " << historial.diasSobreMeta(meta) << '\n';
+    std::cout << "Mejor racha: " << historial.mejorRacha(meta) << '\n';
+
+    return 0;
+}
